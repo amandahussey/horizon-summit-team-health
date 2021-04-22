@@ -1,0 +1,25 @@
+{
+  "name": "@apertures/vis-stoplight",
+  "copyright": "Copyright 2021 Olive",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Olive",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "dependencies": {
+    "@apertures/shared": "latest",
+    "cx-olive-style-core": "git+ssh://git@bitbucket.org/crosschx/cx-olive-style-core.git#v1.1.2"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "prop-types": ">=15.7.2",
+    "react": ">=16.2.0"
+  },
+  "scripts": {
+    "build": "../../node_modules/.bin/webpack",
+    "build:dev": "../../node_modules/.bin/webpack --env.devtool=source-map",
+    "build:watch": "../../node_modules/.bin/webpack -w --env.devtool=source-map"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@apertures/loader-redYellowGreenLoader",
+  "copyright": "Copyright 2021 Olive",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Olive",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "dependencies": {
+    "@apertures/loader": "latest"
+  },
+  "devDependencies": {},
+  "peerDependencies": {},
+  "scripts": {
+    "build": "../../node_modules/.bin/webpack",
+    "build:dev": "../../node_modules/.bin/webpack --env.devtool=source-map",
+    "build:watch": "../../node_modules/.bin/webpack -w --env.devtool=source-map"
+  }
+}
