@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import StopLight from './stoplight/src';
@@ -7,10 +6,12 @@ import StopLight from './stoplight/src';
 function App() {
 
   async function callApi() {
+    // const response = await fetch('/api/slack-stoplight-responses');
     const response = await fetch('/api/hello');
+    console.log('response', response)
     const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
     console.log('body', body)
+    if (response.status !== 200) throw Error(body.message);
     return body;
   }; 
 
@@ -19,7 +20,8 @@ function App() {
   }, [])
 
   return (
-    <StopLight />
+    <div>hi</div>
+    // <StopLight />
   );
 }
 

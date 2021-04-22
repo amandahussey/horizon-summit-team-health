@@ -1,14 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { themePropType } from '@apertures/shared/dist/utilities/themes';
+import { themePropType } from '@apertures/shared/dist/utilities/themes';
 
-function Stoplight({ theme, values }) {
-  return <div>STOPLIGHT</div>;
+function Stoplight({ theme, values = []}) {
+  const [red = 0, yellow = 0, green = 0] = values;
+  // console.log(red, yellow, green)
+
+  return (
+    <div>
+      <div>Red: {red}</div>
+      <div>Yellow: {yellow}</div>
+      <div>Green: {green}</div>
+    </div>
+  );
 }
 
 Stoplight.propTypes = {
-  // theme: themePropType,
-  values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  theme: themePropType,
+  // values: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 Stoplight.defaultProps = {
