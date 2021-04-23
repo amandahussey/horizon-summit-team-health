@@ -55,73 +55,6 @@ const redResponse = `Sorry to hear you're not doing great today. ${SAD_EMOJI} Wh
 const yellowResponse = `Could be worse? ${SHRUG_EMOJI} What can we be doing better?`;
 const greenResponse = `Yay! ${SMILE_EMOJI} What's been going well for you?`;
 
-const messageJsonBlock = {
-	"blocks": [
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "How are you doing today?"
-			}
-		},
-		{
-			"type": "actions",
-			"elements": [
-        // {
-				// 	"type": "button",
-				// 	"text": {
-				// 		"type": "plain_text",
-				// 		"text": " :large_blue_circle:",
-				// 		"emoji": true
-				// 	},
-				// 	"value": "blue",
-        //   "action_id": "button_blue"
-				// },
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": " :red_circle:",
-						"emoji": true
-					},
-					"value": "red",
-          "action_id": "button_red"
-				},
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": ":large_yellow_circle:",
-						"emoji": true
-					},
-					"value": "yellow",
-          "action_id": "button_yellow"
-				},
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": ":large_green_circle:",
-						"emoji": true
-					},
-					"value": "green",
-          "action_id": "button_green"
-				},
-        // {
-				// 	"type": "button",
-				// 	"text": {
-				// 		"type": "plain_text",
-				// 		"text": " :large_orange_circle:",
-				// 		"emoji": true
-				// 	},
-				// 	"value": "orange",
-        //   "action_id": "button_orange"
-				// },
-			]
-		}
-	]
-}
-
 function generateNudge(color){
   let response;
   if(color === 'green') response = greenResponse;
@@ -212,15 +145,20 @@ slackInteractions.viewSubmission('modal_submit' , async (payload) => {
 
   console.log('user', user)
 
-  const messageRecieved = [
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "Message received! We will pass this along to your manager."
+  const messageRecieved = {
+    "text": "Message received! We will pass this along to your manager.",
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "Message received! We will pass this along to your manager."
+        }
       }
-    }
-  ]
+    ]
+  }
+
+  webClient.chat.postMessage({...messageRecieved, channel: user.id })
 
   let emoji;
   if(currentColor === 'red') emoji = RED_EMOJI;
@@ -228,19 +166,23 @@ slackInteractions.viewSubmission('modal_submit' , async (payload) => {
   else if(currentColor === 'green') emoji = GREEN_EMOJI;
   
 
-  const feedbackToManager = [
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": `*Feedback from ${user.name} on feeling ${emoji}*:\n_${input}_`
-			}
-		}
-  ]
-  
+  const feedbackToManager = {
+    "text": `Received feedback from ${user.name}`,
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": `*Feedback from ${user.name} on feeling ${emoji}*:\n_${input}_`
+        }
+      }
+    ]
+  }
 
-  postMessage(messageRecieved, user.id)
-  postMessage(feedbackToManager, managerId)
+  webClient.chat.postMessage({...feedbackToManager, channel: managerId })
+  
+  // postMessage(messageRecieved, user.id)
+  // postMessage(feedbackToManager, managerId)
 
   return {
     response_action: "clear"
@@ -248,50 +190,53 @@ slackInteractions.viewSubmission('modal_submit' , async (payload) => {
 })
 
 
-const prompt = [
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "How are you doing today?"
+const prompt = {
+  "text": "How are you doing today?",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "How are you doing today?"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": " :red_circle:",
+            "emoji": true
+          },
+          "value": "red",
+          "action_id": "button_red"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": ":large_yellow_circle:",
+            "emoji": true
+          },
+          "value": "yellow",
+          "action_id": "button_yellow"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": ":large_green_circle:",
+            "emoji": true
+          },
+          "value": "green",
+          "action_id": "button_green"
+        },
+      ]
     }
-  },
-  {
-    "type": "actions",
-    "elements": [
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": " :red_circle:",
-          "emoji": true
-        },
-        "value": "red",
-        "action_id": "button_red"
-      },
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": ":large_yellow_circle:",
-          "emoji": true
-        },
-        "value": "yellow",
-        "action_id": "button_yellow"
-      },
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": ":large_green_circle:",
-          "emoji": true
-        },
-        "value": "green",
-        "action_id": "button_green"
-      },
-    ]
-  }
-]
+  ]
+}
 
 const prompt2 = [
   {
@@ -359,7 +304,8 @@ function postMessage(messageBlock, userId){
   request(options, callback);
 }
 
-postMessage(prompt, myUserId);
+// postMessage(prompt, myUserId);
+webClient.chat.postMessage({...prompt, channel: myUserId })
 
 let redCount = 0, yellowCount = 0, greenCount = 0;
 let currentColor;
@@ -389,16 +335,19 @@ slackInteractions.action({ actionId: "button_red" }, async (payload) => {
 		const { user, actions, response_url } = payload
     console.log("RED button click recieved: ", redCount, user.name, actions[0].action_id)
     sendResponse(response_url, `*${dateDisplay}:* ${RED_EMOJI}`, 'red', user.id);
-    const messageToManager = [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `*${user.name} has reported feeling:* ${RED_EMOJI}`
+    const messageToManager = {
+      "text": `${RED_EMOJI} for ${user.name} today`,
+      "blocks": [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": `*${user.name} has reported feeling:* ${RED_EMOJI}`
+          }
         }
-      }
-    ]
-    postMessage(messageToManager, managerId)
+      ]
+    }
+    webClient.chat.postMessage({...messageToManager, channel: managerId })
   } catch (e) {
     console.error("Error: ", e)
   }
@@ -413,16 +362,19 @@ slackInteractions.action({ actionId: "button_yellow" }, async (payload) => {
 		const { user, actions, response_url } = payload
     console.log("YELLOW button click recieved: ", yellowCount, user.name, actions[0].action_id)
     sendResponse(response_url, `*${dateDisplay}:* ${YELLOW_EMOJI}`, 'yellow', user.id);
-    const messageToManager = [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `*${user.name} has reported feeling:* ${YELLOW_EMOJI}`
+    const messageToManager = {
+      "text": `${YELLOW_EMOJI} for ${user.name} today`,
+      "blocks": [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": `*${user.name} has reported feeling:* ${YELLOW_EMOJI}`
+          }
         }
-      }
-    ]
-    postMessage(messageToManager, managerId)
+      ]
+    }
+    webClient.chat.postMessage({...messageToManager, channel: managerId })
   } catch (e) {
     console.error("Error: ", e)
   }
@@ -438,16 +390,19 @@ slackInteractions.action({ actionId: "button_green" }, async (payload) => {
 		const { user, actions, response_url } = payload
     console.log("GREEN button click recieved: ", greenCount, user.name, user.id, actions[0].action_id)
     sendResponse(response_url, `*${dateDisplay}:* ${GREEN_EMOJI}`, 'green', user.id);
-    const messageToManager = [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `*${user.name} has reported feeling:* ${GREEN_EMOJI}`
+    const messageToManager = {
+      "text": `${GREEN_EMOJI} for ${user.name} today`,
+      "blocks": [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": `*${user.name} has reported feeling:* ${GREEN_EMOJI}`
+          }
         }
-      }
-    ]
-    postMessage(messageToManager, managerId)
+      ]
+    }
+    webClient.chat.postMessage({...messageToManager, channel: managerId })
   } catch (e) {
     console.error("Error: ", e)
   }
