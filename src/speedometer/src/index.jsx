@@ -27,6 +27,7 @@ const SHRUG_EMOJI = '\u{1F937}'
 const SAD_EMOJI = '\u{1F61E}'
 const TERRIBLE_EMOJI = '\u{1F616}'
 const WORST_EMOJI = '\u{1F621}'
+const EYES_EMOJI = '\u{1F440}'
 
 const DEFAULT_SIZE = 400;
 const DEFAULT_THEME = {
@@ -44,7 +45,8 @@ function Speedometer({ size, theme, values }) {
   // const average = 0.3;
 
   let emoji;
-  if(average < 0.1) emoji = WORST_EMOJI;
+  if(totalResponses === 0) emoji = EYES_EMOJI;
+  else if(totalResponses > 0 && average < 0.1) emoji = WORST_EMOJI;
   else if(average >= 0.1 && average < 0.2) emoji = TERRIBLE_EMOJI;
   else if(average >= .2 && average < .4) emoji = SAD_EMOJI;
   else if(average >= .4 && average < .6) emoji = SHRUG_EMOJI;

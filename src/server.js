@@ -152,7 +152,7 @@ slackInteractions.viewSubmission('modal_submit' , async (payload) => {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "Message received! We will pass this along to your manager."
+          "text": ":envelope: Message received! We will pass this along to your manager."
         }
       }
     ]
@@ -180,9 +180,6 @@ slackInteractions.viewSubmission('modal_submit' , async (payload) => {
   }
 
   webClient.chat.postMessage({...feedbackToManager, channel: managerId })
-  
-  // postMessage(messageRecieved, user.id)
-  // postMessage(feedbackToManager, managerId)
 
   return {
     response_action: "clear"
@@ -238,50 +235,53 @@ const prompt = {
   ]
 }
 
-const prompt2 = [
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "How are you doing today?"
+const prompt2 = {
+  "text": "How are you doing today?",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "How are you doing today?"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": " :red_circle:",
+            "emoji": true
+          },
+          "value": "red",
+          "action_id": "button_red2"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": ":large_yellow_circle:",
+            "emoji": true
+          },
+          "value": "yellow",
+          "action_id": "button_yellow2"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": ":large_green_circle:",
+            "emoji": true
+          },
+          "value": "green",
+          "action_id": "button_green2"
+        },
+      ]
     }
-  },
-  {
-    "type": "actions",
-    "elements": [
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": " :red_circle:",
-          "emoji": true
-        },
-        "value": "red",
-        "action_id": "button_red2"
-      },
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": ":large_yellow_circle:",
-          "emoji": true
-        },
-        "value": "yellow",
-        "action_id": "button_yellow2"
-      },
-      {
-        "type": "button",
-        "text": {
-          "type": "plain_text",
-          "text": ":large_green_circle:",
-          "emoji": true
-        },
-        "value": "green",
-        "action_id": "button_green2"
-      },
-    ]
-  }
-]
+  ]
+}
 
 // lions team health U01V260RDHT
 // me U0203RM8NMP
@@ -304,7 +304,6 @@ function postMessage(messageBlock, userId){
   request(options, callback);
 }
 
-// postMessage(prompt, myUserId);
 webClient.chat.postMessage({...prompt, channel: myUserId })
 
 let redCount = 0, yellowCount = 0, greenCount = 0;
@@ -312,8 +311,7 @@ let currentColor;
 
 slackEvents.on('app_mention', async (event) => {
   try {
-    // const mentionResponseBlock = { ...messageJsonBlock, ...{channel: event.channel}}
-    postMessage(prompt2, event.channel)
+    webClient.chat.postMessage({...prompt2, channel: event.channel })
   } catch (e) {
     console.error("Error: ", e)
   }
