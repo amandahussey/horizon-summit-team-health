@@ -14,9 +14,12 @@ function App() {
     return body;
   }; 
 
-  useEffect(async () => {
-    const body = await callApi();
-    setValues(body.data);
+  useEffect(() => {
+    async function fetchData(){
+      const body = await callApi();
+      setValues(body.data);
+    }
+    fetchData()
   }, [])
 
   return (

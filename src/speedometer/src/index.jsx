@@ -4,16 +4,20 @@ import Icon from 'olive-components/lib/icon';
 
 import {
   BLACK,
+  // GREEN,
   GREY,
+  // PINK,
   PURPLE,
   TRANSPARENT,
   WHITE,
 } from '@apertures/shared/dist/utilities/colors';
 import { useAnimate } from '@apertures/shared/dist/utilities/hooks';
 import { themePropType } from '@apertures/shared/dist/utilities/themes';
-import { abbreviateNumber } from '@apertures/shared/dist/utilities/utils';
+// import { abbreviateNumber } from '@apertures/shared/dist/utilities/utils';
 
 import './speedometer.scss';
+
+// const GRADIENT_COLORS = [PINK.LIGHT, WHITE.PRIMARY, GREEN.MINT]
 
 const BEST_EMOJI = '\u{1F973}'
 const HAPPIEST_EMOJI = '\u{1F603}'
@@ -36,20 +40,18 @@ const DEFAULT_THEME = {
 function Speedometer({ size, theme, values }) {
   const [red = 0, yellow = 0, green = 0] = values;
   const totalResponses = red + yellow + green;
-  // const average = totalResponses > 0 ? (0 * red + 0.5 * yellow + 1 * green) / totalResponses : 0;
-  const average = 0.9;
+  const average = totalResponses > 0 ? (0 * red + 0.5 * yellow + 1 * green) / totalResponses : 0;
+  // const average = 0.3;
 
   let emoji;
   if(average < 0.1) emoji = WORST_EMOJI;
   else if(average >= 0.1 && average < 0.2) emoji = TERRIBLE_EMOJI;
   else if(average >= .2 && average < .4) emoji = SAD_EMOJI;
-  else if(average >= .4 && average < .65) emoji = SHRUG_EMOJI;
-  else if(average >= .65 && average < .75) emoji = SLIGHTLY_HAPPY_EMOJI;
+  else if(average >= .4 && average < .6) emoji = SHRUG_EMOJI;
+  else if(average >= .6 && average < .75) emoji = SLIGHTLY_HAPPY_EMOJI;
   else if(average >= .75 && average < .8) emoji = HAPPY_EMOJI;
   else if(average >= .8 && average < .9) emoji = HAPPIEST_EMOJI;
   else emoji = BEST_EMOJI;
-
-  console.log(values, average)
 
   const labelSize = size * 0.05;
   const { background, colors, needle, shadow, text } = {
@@ -100,7 +102,7 @@ function Speedometer({ size, theme, values }) {
             <div
               className="graduation-fill"
               style={{
-                background: `conic-gradient(red 30%, yellow 50%, green 70%)`,
+                background: `conic-gradient(rgb(255 0 87) 25%, yellow 50%, rgb(0 255 187) 75%)`,
                 transform: `rotate(180deg)`,
               }}
             />
@@ -134,7 +136,7 @@ function Speedometer({ size, theme, values }) {
 Speedometer.propTypes = {
   size: PropTypes.number,
   theme: themePropType,
-  value: PropTypes.number.isRequired,
+  values: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 Speedometer.defaultProps = {
