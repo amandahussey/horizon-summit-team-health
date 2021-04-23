@@ -1,0 +1,106 @@
+@import '~cx-olive-style-core/lib/components';
+
+.speedometer {
+  @extend %overflow--hidden;
+  @extend %position--relative;
+
+  .speedometer-panel {
+    @extend %position--relative;
+
+    .graduation {
+      @extend %border-radius--50;
+      @extend %height--100;
+      @extend %overflow--hidden;
+      @extend %position--absolute;
+      @extend %width--100;
+  
+      left: 0;
+      top: 0;
+
+      .graduation-fill {
+        @extend %position--relative;
+  
+        height: 120%;
+        left: -10%;
+        opacity: 0.6;
+        width: 120%;
+      }
+
+      .graduation-dash {
+        @extend %position--absolute;
+
+        height: 120%;
+        left: 50%;
+        top: 0;
+        width: 1px;
+        background: repeating-linear-gradient(
+          var(--needle-color),
+          var(--needle-color) 8px,
+          transparent 8px,
+          transparent 16px
+        );
+
+        &.q1 {
+          transform: rotate(-45deg);
+        }
+
+        &.q3 {
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    .needle {
+      @extend %border-radius--50;
+      @extend %height--60;
+      @extend %position--absolute;
+      @extend %width--60;
+  
+      background: var(--needle-color);
+      left: 20%;
+      top: 30%;
+  
+      &:before {
+        @extend %display--inline-block;
+        @extend %position--absolute;
+  
+        background: var(--needle-color);
+        content: "";
+        height: 15%;
+        left: -6.5%;
+        top: 42.5%;
+        transform: rotate(-45deg) skew(15deg, 15deg);
+        width: 15%;
+      }
+    }
+
+    .central-text {
+      @extend %border-radius--50;
+      @extend %display--flex;
+      @extend %height--50;
+      @extend %position--absolute;
+      @extend %text-align--center;
+      @extend %width--50;
+  
+      flex-direction: column;
+      justify-content: flex-start;
+      left: 25%;
+      padding-top: 8%;
+      top: 35%;
+    }
+  }
+
+  .speedometer-label {
+    @extend %position--absolute;
+
+    bottom: 2%;
+
+    &.left {
+      left: 7%;
+    }
+
+    &.right {
+      right: 5%;
+    }
+  }
+}

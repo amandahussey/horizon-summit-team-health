@@ -1,27 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
-import StopLight from './stoplight/src';
+import Speedometer from './speedometer/src';
 
 function App() {
 
+  const [values, setValues] = useState([]);
+
   async function callApi() {
-    // const response = await fetch('/api/slack-stoplight-responses');
-    const response = await fetch('/api/hello');
-    console.log('response', response)
+    const response = await fetch('/api/slack-stoplight-responses');
     const body = await response.json();
-    console.log('body', body)
     if (response.status !== 200) throw Error(body.message);
     return body;
   }; 
 
-  useEffect(() => {
-    callApi()
+  useEffect(async () => {
+    const body = await callApi();
+    setValues(body.data);
   }, [])
 
   return (
-    <div>hi</div>
-    // <StopLight />
+    <Speedometer values={values} />
   );
 }
 

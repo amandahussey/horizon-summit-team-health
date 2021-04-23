@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apertures/shared": "^3.6.0",
+    "@apertures/vis-thermostat": "^3.6.0",
     "@slack/events-api": "^3.0.0",
     "@slack/interactive-messages": "^2.0.1",
     "@slack/web-api": "^6.1.0",
@@ -15,6 +16,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "request": "^2.88.2",
+    "sass": "^1.32.11",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
@@ -40,6 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
-  
+  },
+  "proxy": "http://localhost:3000"
 }
