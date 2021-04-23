@@ -104,3 +104,15 @@
     }
   }
 }
+
+.bottom-bracket {
+  border: 1px solid white;
+  border-radius: 0 0 7px 7px;
+  border-top: none;
+  bottom: 0;
+  content: '';
+  height: 15px;
+  left: 0;
+  margin-left: -24px;
+  margin-right: -24px;
+}

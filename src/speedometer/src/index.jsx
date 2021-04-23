@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icon from 'olive-components/lib/icon';
 
 import {
   BLACK,
@@ -38,8 +39,6 @@ function Speedometer({ size, theme, values }) {
   // const average = totalResponses > 0 ? (0 * red + 0.5 * yellow + 1 * green) / totalResponses : 0;
   const average = 0.9;
 
-  console.log('average', average)
-
   let emoji;
   if(average < 0.1) emoji = WORST_EMOJI;
   else if(average >= 0.1 && average < 0.2) emoji = TERRIBLE_EMOJI;
@@ -58,45 +57,76 @@ function Speedometer({ size, theme, values }) {
     ...theme,
   };
 
+  const [animatedAverage] = useAnimate(average)
   // range from 0 to 180
-  const needleDeg = average * 100 * 1.8;
+  const needleDeg = animatedAverage * 100 * 1.8;
 
   return (
-    <div
-      className="speedometer"
-      style={{
-        background,
-        color: text,
-        height: size * 0.6,
-        width: size,
-        '--needle-color': needle,
-        '--text-color': text,
-      }}
-    >
-      <div className="speedometer-panel" style={{ height: size, width: size }}>
-        <div className="graduation">
-          <div className="graduation-dash q1" />
-          <div className="graduation-dash" />
-          <div className="graduation-dash q3" />
+    <div style={{ width: size, color: 'white' }}>
+      <h3
+        style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          marginLeft: -24,
+          fontWeight: 'bold'
+        }}
+      ><Icon icon={Icon.ICON.MAXIMIZE} size={Icon.SIZE.LG} />
+        <div style={{
+          height: 6,
+          width: 6,
+          background: 'white',
+          position: 'relative',
+          right: 19,
+          borderRadius: '50%'
+        }}/>
+        Team Mood
+      </h3>
+      <div
+        className="speedometer"
+        style={{
+          background,
+          color: text,
+          height: size * 0.6,
+          width: size,
+          '--needle-color': needle,
+          '--text-color': text,
+        }}
+      >
+        <div className="speedometer-panel" style={{ height: size, width: size }}>
+          <div className="graduation">
+            <div className="graduation-dash q1" />
+            <div className="graduation-dash" />
+            <div className="graduation-dash q3" />
+            <div
+              className="graduation-fill"
+              style={{
+                background: `conic-gradient(red 30%, yellow 50%, green 70%)`,
+                transform: `rotate(180deg)`,
+              }}
+            />
+          </div>
           <div
-            className="graduation-fill"
+            className="needle"
             style={{
-              background: `conic-gradient(red 30%, yellow 50%, green 70%)`,
-              transform: `rotate(180deg)`,
+              fontSize: labelSize,
+              transform: `rotate(${needleDeg}deg)`,
             }}
           />
-        </div>
-        <div
-          className="needle"
-          style={{
-            fontSize: labelSize,
-            transform: `rotate(${needleDeg}deg)`,
-          }}
-        />
-        <div className="central-text" style={{ background: shadow }}>
-          <div style={{ fontSize: 60, position: 'relative', bottom: 15 }}>{emoji}</div>
+          <div className="central-text" style={{ background: shadow }}>
+            <div style={{ fontSize: 60, position: 'relative', bottom: 15 }}>{emoji}</div>
+          </div>
         </div>
       </div>
+      <div 
+        style={{ 
+          textAlign: 'center',
+          padding: 12,
+          fontWeight: 'bold'
+        }}
+      >
+        Total Responses: {totalResponses}
+      </div>
+      <div className="bottom-bracket"></div>
     </div>
   );
 }

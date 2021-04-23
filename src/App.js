@@ -20,7 +20,11 @@ function App() {
   }, [])
 
   return (
-    <Speedometer values={values} />
+    <div style={{ background: 'black', display: 'flex', justifyContent: 'center', height: '100vh' }}>
+      <div style={{ display: 'flex', height: '70%', alignItems: 'center' }}>
+        <Speedometer values={values} />
+      </div>
+    </div>
   );
 }
 
